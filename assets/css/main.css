@@ -1,0 +1,18 @@
+/* ============================================================================
+   main.css — single entry point.
+   Loads stylesheets in cascade order: tokens → reset → base → layout → components.
+   New components/layouts go in /components and /layout respectively, then add
+   an @import below. Keep this file thin — no rules should live here directly.
+   ============================================================================ */
+
+/* 1. Base — design tokens, reset, and global typography. */
+@import url("base/tokens.css");
+@import url("base/reset.css");
+@import url("base/typography.css");
+
+/* 2. Layout — page-level containers and the Slate form area. */
+@import url("layout/containers.css");
+
+/* 3. Components — header, footer, future shared UI. */
+@import url("components/header.css");
+@import url("components/footer.css");

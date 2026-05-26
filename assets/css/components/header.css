@@ -1,0 +1,69 @@
+/* ============================================================================
+   header.css — minimal site header.
+   White bg, brand mark only. Matches the live tabor academy header height
+   (93px) and side padding (90px) at desktop widths.
+
+   To add nav items later:
+   1. Add a <nav class="site-header__nav"> next to .site-header__brand in HTML.
+   2. Add the corresponding rules at the bottom of this file (commented stub
+      included below).
+   ============================================================================ */
+
+.site-header {
+    background-color: var(--color-bg-header);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 10;
+}
+
+.site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;     /* logo left — switch to space-between when nav is added */
+    min-height: var(--header-height);
+    padding-block: var(--header-pad-y);
+}
+
+.site-header__brand {
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;                  /* eliminates inline-image baseline gap */
+    transition: opacity var(--transition-fast);
+}
+
+.site-header__brand:hover,
+.site-header__brand:focus-visible {
+    opacity: 0.85;
+}
+
+.site-header__logo {
+    height: 60px;
+    width: auto;
+    max-width: 100%;
+}
+
+/* Narrow viewport: shrink logo + tighten padding. */
+@media (max-width: 640px) {
+    .site-header__logo {
+        height: 44px;
+    }
+}
+
+/* ----------------------------------------------------------------------------
+   Future nav stub — uncomment and fill in when adding header menu items.
+   ----------------------------------------------------------------------------
+
+   .site-header__nav ul {
+       display: flex;
+       gap: var(--space-md);
+   }
+
+   .site-header__nav a {
+       text-transform: uppercase;
+       letter-spacing: var(--letter-spacing-label);
+       font-size: var(--fz-label);
+       font-weight: 500;
+       color: var(--color-tabor-red);
+   }
+
+---------------------------------------------------------------------------- */

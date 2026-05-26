@@ -1,0 +1,72 @@
+/* ============================================================================
+   typography.css — base text styles.
+   Fonts come from Google Fonts via <link> in index.html.
+   Component-specific type styling lives with the component (header.css, etc).
+   ============================================================================ */
+
+body {
+    font-family: var(--font-body);
+    font-size: var(--fz-body);
+    line-height: var(--lh-normal);
+    color: var(--color-text-body);
+    background-color: var(--color-bg-page);
+    font-weight: 300;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    line-height: var(--lh-snug);
+    color: var(--color-tabor-navy);
+}
+
+h1 { font-size: var(--fz-h1); }
+h2 { font-size: var(--fz-h2); }
+h3 { font-size: var(--fz-h3); }
+h4 { font-size: var(--fz-h4); }
+
+/* Sensible default link treatment — components override as needed. */
+a {
+    color: var(--color-tabor-red);
+    transition: opacity var(--transition-fast);
+}
+
+a:hover,
+a:focus-visible {
+    opacity: 0.75;
+}
+
+a:focus-visible {
+    outline: 2px solid var(--color-tabor-red);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+/* Skip link — visible only when focused. */
+.skip-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: var(--space-xs) var(--space-sm);
+    background: var(--color-tabor-navy);
+    color: var(--color-tabor-white);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-label);
+    font-size: var(--fz-small);
+    font-weight: 500;
+    z-index: 9999;
+    transform: translateY(-100%);
+    transition: transform var(--transition-fast);
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+    transform: translateY(0);
+    opacity: 1;
+    outline: none;
+}

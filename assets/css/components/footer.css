@@ -1,0 +1,309 @@
+/* ============================================================================
+   footer.css — site footer.
+   Mirrors the live tabor academy footer visual:
+     • Top:    CTA (right) + brand mark (left)
+     • Middle: 3-col contact info
+     • Bottom: utility nav (left) + social (right) + legal nav
+
+   Background is a wave hero image with a navy fallback color.
+   ============================================================================ */
+
+.site-footer {
+    color: var(--color-text-on-dark);
+    background-color: var(--color-bg-footer);
+    background-image: var(--footer-bg-image);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+/* Gradient overlay. Matches the live site's .footer-container::before:
+   transparent at top (sky shows through, navy CTA reads against it) → teal
+   mid-section → deep navy at the bottom (white text reads cleanly over it).
+   The actual gradient stops live in --footer-bg-gradient in tokens.css. */
+.site-footer::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--footer-bg-gradient);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.site-footer__inner {
+    position: relative;             /* sits above the ::before gradient overlay */
+    z-index: 1;
+    padding-block: var(--space-2xl);
+    display: grid;
+    gap: var(--space-lg);
+}
+
+/* ----------------------------------------------------------------------------
+   Top row — CTA + brand
+   On desktop, CTA pinned to the top right, brand sits below it on the left.
+   On mobile, both stack centered.
+   ---------------------------------------------------------------------------- */
+
+.site-footer__cta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    gap: var(--space-sm);
+}
+
+.site-footer__cta-headings {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+/* Top-half CTA text sits over the lighter sky portion of the wave image,
+   so it uses navy (matches the live site's computed color: rgb(0,42,58)). */
+.site-footer__tagline {
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-label);
+    font-size: var(--fz-label);
+    font-weight: 500;
+    color: var(--color-tabor-navy);
+}
+
+.site-footer__tagline em {
+    text-transform: lowercase;
+    letter-spacing: normal;
+    font-style: italic;
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: var(--fz-tagline);
+    color: var(--color-tabor-navy);
+}
+
+.site-footer__cta-title {
+    font-size: clamp(2.25rem, 1.5rem + 2.5vw, var(--fz-display));
+    line-height: var(--lh-tight);
+    color: var(--color-tabor-navy);
+    margin: 0;
+}
+
+.site-footer__cta-nav ul {
+    display: flex;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.site-footer__cta-nav a {
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-label);
+    font-size: var(--fz-label);
+    font-weight: 500;
+    color: var(--color-tabor-red);
+    text-decoration: underline;
+    text-decoration-color: transparent;          /* underline reveals on hover */
+    text-underline-offset: 6px;
+    text-decoration-thickness: 2px;
+    transition: text-decoration-color var(--transition-base);
+}
+
+/* Live site lifts these on hover with an animated underline pseudo-element.
+   We keep the behavior accessible (color unchanged, underline reveals) but
+   skip the transform animation per the minimal-template brief. */
+.site-footer__cta-nav a:hover,
+.site-footer__cta-nav a:focus-visible {
+    color: var(--color-tabor-red);
+    text-decoration-color: var(--color-tabor-red);
+    opacity: 1;
+}
+
+/* ----------------------------------------------------------------------------
+   Brand mark
+   ---------------------------------------------------------------------------- */
+
+.site-footer__brand img {
+    width: 175px;
+    height: auto;
+    max-width: 100%;
+}
+
+/* ----------------------------------------------------------------------------
+   Contact info — 3 columns at desktop, stack on mobile
+   ---------------------------------------------------------------------------- */
+
+.site-footer__contact {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+    padding-block: var(--space-lg);
+    border-top: 1px solid var(--color-divider);
+    border-bottom: 1px solid var(--color-divider);
+}
+
+@media (min-width: 768px) {
+    .site-footer__contact {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-xl);
+    }
+}
+
+.site-footer__contact-title {
+    font-family: var(--font-heading);
+    font-size: var(--fz-h3);
+    font-weight: 400;
+    color: var(--color-text-on-dark);
+    margin-bottom: var(--space-sm);
+}
+
+.site-footer__contact-col address {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-label);
+    font-size: var(--fz-label);
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+.site-footer__contact-col a {
+    color: var(--color-text-on-dark);
+    text-decoration: underline;
+    text-decoration-color: var(--color-text-on-dark);
+    text-underline-offset: 3px;
+    text-transform: lowercase;       /* email addresses render lowercase */
+    letter-spacing: 0.06em;
+    transition: text-decoration-color var(--transition-base);
+}
+
+.site-footer__contact-col a[href^="tel:"] {
+    text-transform: none;            /* phone numbers keep their digits */
+}
+
+/* Live behavior: text stays white (high contrast over the navy bottom of the
+   gradient), the underline fades to transparent on hover. */
+.site-footer__contact-col a:hover,
+.site-footer__contact-col a:focus-visible {
+    color: var(--color-text-on-dark);
+    text-decoration-color: transparent;
+    opacity: 1;
+}
+
+/* ----------------------------------------------------------------------------
+   Utility row — secondary nav + social
+   ---------------------------------------------------------------------------- */
+
+.site-footer__utility {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    align-items: flex-start;
+}
+
+@media (min-width: 768px) {
+    .site-footer__utility {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.site-footer__utility-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+}
+
+.site-footer__utility-nav a {
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-label);
+    font-size: var(--fz-label);
+    font-weight: 500;
+    color: var(--color-text-on-dark);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 6px;
+    transition: text-decoration-color var(--transition-base);
+}
+
+/* Live behavior: color stays white, underline reveals on hover. */
+.site-footer__utility-nav a:hover,
+.site-footer__utility-nav a:focus-visible {
+    color: var(--color-text-on-dark);
+    text-decoration-color: var(--color-text-on-dark);
+    opacity: 1;
+}
+
+/* Social — circular icon buttons */
+.site-footer__social ul {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.site-footer__social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.5);   /* matches live: half-opacity white ring */
+    border-radius: 50%;
+    color: var(--color-text-on-dark);
+    transition:
+        background-color var(--transition-fast),
+        border-color var(--transition-fast),
+        color var(--transition-fast);
+}
+
+/* Live behavior: white fill + red icon (NOT navy) — keeps the brand accent
+   visible against the now-white background. */
+.site-footer__social a:hover,
+.site-footer__social a:focus-visible {
+    background-color: var(--color-text-on-dark);
+    border-color: var(--color-text-on-dark);
+    color: var(--color-tabor-red);
+    opacity: 1;
+}
+
+.site-footer__social svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* ----------------------------------------------------------------------------
+   Legal nav
+   ---------------------------------------------------------------------------- */
+
+.site-footer__legal ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    justify-content: flex-start;
+}
+
+@media (min-width: 768px) {
+    .site-footer__legal ul {
+        justify-content: flex-end;
+    }
+}
+
+.site-footer__legal a {
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-legal);
+    font-size: var(--fz-small);
+    font-weight: 500;
+    color: var(--color-text-on-dark);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 5px;
+    transition: text-decoration-color var(--transition-base);
+}
+
+/* Live behavior: color stays white, underline reveals on hover. */
+.site-footer__legal a:hover,
+.site-footer__legal a:focus-visible {
+    color: var(--color-text-on-dark);
+    text-decoration-color: var(--color-text-on-dark);
+    opacity: 1;
+}
