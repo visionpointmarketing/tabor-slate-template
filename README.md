@@ -37,10 +37,15 @@ npx serve .
 
 ```
 tabor-slate-template/
-├── index.html              ← the template (duplicate per form page)
+├── index.html              ← staging template (visual reference, GH Pages preview)
 ├── README.md
 ├── .gitignore
-└── assets/
+├── slate/                  ← Slate install files (paste into Branding Editor)
+│   ├── build.xslt              ← page template wrapping all Slate pages
+│   ├── build.css               ← flattened CSS + Slate UI overrides
+│   ├── build-fonts.css         ← FontAwesome only (Google Fonts via <link>)
+│   └── README.md               ← deploy instructions
+└── assets/                 ← staging assets (used by index.html)
     ├── css/
     │   ├── main.css        ← single entry; @imports the rest in cascade order
     │   ├── base/
@@ -60,6 +65,20 @@ tabor-slate-template/
     ├── fonts/              ← reserved for self-hosted fonts (see README)
     └── js/                 ← reserved for future scripts (none today)
 ```
+
+**Two distinct purposes:**
+
+- `index.html` + `assets/` = the **staging** environment. Hosted on GitHub Pages
+  for visual review. Modular CSS, semantic HTML, plain `file://` works.
+- `slate/` = the **production** install for Tabor's Slate instance. XSLT plus
+  flat single-file CSS, paste-and-publish via Slate's Branding Editor. See
+  `slate/README.md` for deploy instructions.
+
+When the chrome design changes, update both. The CSS rules are nearly
+identical between the two — the differences are: image paths (`assets/img/…`
+vs `/images/…`), CSS structure (`@import`'d files vs one flat file), and a
+small set of Slate UI overrides at the bottom of `slate/build.css` that don't
+exist in staging.
 
 ---
 

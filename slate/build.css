@@ -1,0 +1,758 @@
+/* ============================================================================
+   build.css — Tabor Academy Slate branding
+   ============================================================================
+   Single-file production stylesheet for Tabor's Slate instance. Mirrors the
+   visual design from the staging environment at
+   https://visionpointmarketing.github.io/tabor-slate-template/.
+
+   Structure (in cascade order):
+     1. Design tokens                       — CSS custom properties
+     2. Minimal reset                       — scoped to avoid breaking Slate UI
+     3. Base typography                     — body + headings
+     4. Layout                              — Slate body content area
+     5. Components                          — site-header, site-footer
+     6. Slate UI overrides                  — subtabs, file uploader, etc.
+                                              (preserved from existing Tabor
+                                              build.css, recolored to Tabor red)
+
+   To retune brand colors, fonts, or spacing: edit the tokens in section 1.
+   Component CSS reads from those tokens, so changes propagate site-wide.
+   ============================================================================ */
+
+
+/* ============================================================================
+   1. DESIGN TOKENS
+   ============================================================================ */
+
+:root {
+
+    /* Brand colors */
+    --color-tabor-red:    #9D2235;
+    --color-tabor-navy:   #002A3A;
+    --color-tabor-white:  #FFFFFF;
+
+    /* Surfaces & text */
+    --color-text-body:    #373737;
+    --color-text-on-dark: var(--color-tabor-white);
+    --color-bg-page:      #FFFFFF;
+    --color-bg-header:    var(--color-tabor-white);
+    --color-bg-footer:    var(--color-tabor-navy);
+    --color-divider:      rgba(255, 255, 255, 0.18);
+
+    /* Typography families.
+       Tabor's website uses Adobe Typekit "Upgrade". Outfit (Google Fonts) is
+       an openly-licensed substitute that ships at ~90% visual fidelity. To
+       upgrade later: add the Typekit <link> in build.xslt and prepend
+       "upgrade," to --font-body. */
+    --font-heading: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --font-body:    "Outfit", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+    /* Type scale */
+    --fz-display:   3.125rem;   /* 50px — footer CTA */
+    --fz-h1:        2.25rem;    /* 36px */
+    --fz-h2:        2rem;       /* 32px */
+    --fz-h3:        1.5rem;     /* 24px — footer column titles */
+    --fz-h4:        1.25rem;    /* 20px */
+    --fz-body:      1rem;       /* 16px */
+    --fz-small:     0.875rem;   /* 14px */
+    --fz-label:     0.9375rem;  /* 15px — uppercase utility labels */
+    --fz-tagline:   1.125rem;   /* 18px */
+
+    --lh-tight:     1.1;
+    --lh-snug:      1.35;
+    --lh-normal:    1.625;
+
+    --letter-spacing-label: 0.18em;
+    --letter-spacing-legal: 0.1em;
+
+    /* Spacing */
+    --space-2xs:  0.25rem;
+    --space-xs:   0.5rem;
+    --space-sm:   1rem;
+    --space-md:   1.5rem;
+    --space-lg:   2.5rem;
+    --space-xl:   4rem;
+    --space-2xl:  5.625rem;
+
+    /* Layout */
+    --max-width-content:  1280px;
+    --max-width-form:     960px;     /* Slate content (forms, checklist, etc.) — wider than staging */
+    --content-pad-x:      1.25rem;
+    --content-pad-x-lg:   5.625rem;
+
+    /* Header */
+    --header-height:      150px;
+    --header-pad-y:       15px;
+
+    /* Footer background.
+       Image lives at /images/footer-bg.jpg (uploaded to Slate's image lib).
+       Gradient overlay matches the live taboracademy.org footer. */
+    --footer-bg-image:    url("/images/footer-bg.jpg");
+    --footer-bg-gradient: linear-gradient(
+        0.72deg,
+        rgb(23, 49, 82)       9.77%,
+        rgb(10, 116, 138)    46.85%,
+        rgba(0, 167, 181, 0) 86.06%
+    );
+
+    --transition-fast: 150ms ease;
+    --transition-base: 250ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --transition-fast: 0ms;
+        --transition-base: 0ms;
+    }
+}
+
+
+/* ============================================================================
+   2. MINIMAL RESET (scoped to avoid breaking Slate's own UI)
+   ----------------------------------------------------------------------------
+   The full Andy Bell reset is too aggressive for Slate — universal margin: 0
+   and list-style: none would break Slate's form rendering. This is the safe
+   subset: box-sizing, image defaults, the visually-hidden utility, and
+   accessibility-friendly motion handling.
+   ============================================================================ */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+    max-width: 100%;
+    height: auto;
+}
+
+.site-header svg,
+.site-footer svg {
+    display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+.visually-hidden,
+.fsStyleSROnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+
+/* ============================================================================
+   3. BASE TYPOGRAPHY
+   ============================================================================ */
+
+body {
+    margin: 0;
+    background-color: var(--color-bg-page);
+    color: var(--color-text-body);
+    font-family: var(--font-body);
+    font-size: var(--fz-body);
+    line-height: var(--lh-normal);
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Slate-injected headings inside #content get their own scale; we don't reset
+   them globally. Tabor's chrome headings get the serif treatment via
+   component-specific selectors below. */
+
+
+/* ============================================================================
+   4. LAYOUT — Slate body content area
+   ----------------------------------------------------------------------------
+   Slate injects forms, events, portal pages, application checklists,
+   decision letters, etc. inside #content. The wrapper provides consistent
+   chrome (max-width, padding, min-height) regardless of what's rendered.
+   The inline <style> in build.xslt also sets #content { padding: 15px; } —
+   we layer additional spacing here.
+   ============================================================================ */
+
+.slate-form-area {
+    background-color: var(--color-bg-page);
+    padding-block: var(--space-2xl);
+    min-height: 50vh;
+}
+
+.slate-form-area__inner {
+    width: 100%;
+    max-width: var(--max-width-form);
+    margin-inline: auto;
+    padding-inline: var(--content-pad-x);
+}
+
+@media (min-width: 1024px) {
+    .slate-form-area__inner {
+        padding-inline: var(--content-pad-x-lg);
+    }
+}
+
+
+/* ============================================================================
+   5. COMPONENTS — site-header
+   ============================================================================ */
+
+.site-header {
+    background-color: var(--color-bg-header);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 10;
+}
+
+.site-header__inner {
+    width: 100%;
+    max-width: var(--max-width-content);
+    margin-inline: auto;
+    padding-inline: var(--content-pad-x);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: var(--header-height);
+    padding-block: var(--header-pad-y);
+}
+
+@media (min-width: 1024px) {
+    .site-header__inner {
+        padding-inline: var(--content-pad-x-lg);
+    }
+}
+
+.site-header__brand {
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;
+    text-decoration: none;
+    transition: opacity var(--transition-fast);
+}
+
+.site-header__brand:hover,
+.site-header__brand:focus-visible {
+    opacity: 0.85;
+}
+
+.site-header__logo {
+    height: 120px;
+    width: auto;
+    max-width: 100%;
+}
+
+@media (max-width: 640px) {
+    .site-header__inner {
+        min-height: 100px;
+    }
+    .site-header__logo {
+        height: 70px;
+    }
+}
+
+
+/* ============================================================================
+   5. COMPONENTS — site-footer
+   ============================================================================ */
+
+.site-footer {
+    color: var(--color-text-on-dark);
+    background-color: var(--color-bg-footer);
+    background-image: var(--footer-bg-image);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+/* Gradient overlay: transparent at top (sky portion shows, navy CTA reads
+   against it) → teal mid → deep navy at the bottom (white text legible). */
+.site-footer::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--footer-bg-gradient);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.site-footer__inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: var(--max-width-content);
+    margin-inline: auto;
+    padding-inline: var(--content-pad-x);
+    padding-block: var(--space-2xl);
+    display: grid;
+    gap: var(--space-lg);
+}
+
+@media (min-width: 1024px) {
+    .site-footer__inner {
+        padding-inline: var(--content-pad-x-lg);
+    }
+}
+
+/* Footer lists — local list-style override (not universal, so Slate's form
+   lists keep their bullets). */
+.site-footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* ---- Top row: CTA + brand ---- */
+.site-footer__cta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    gap: var(--space-sm);
+}
+
+.site-footer__cta-headings {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.site-footer__tagline {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-label);
+    font-size: var(--fz-label);
+    font-weight: 500;
+    color: var(--color-tabor-navy);
+}
+
+.site-footer__tagline em {
+    text-transform: lowercase;
+    letter-spacing: normal;
+    font-style: italic;
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: var(--fz-tagline);
+    color: var(--color-tabor-navy);
+}
+
+.site-footer__cta-title {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: clamp(2.25rem, 1.5rem + 2.5vw, var(--fz-display));
+    line-height: var(--lh-tight);
+    color: var(--color-tabor-navy);
+    font-weight: 400;
+}
+
+.site-footer__cta-nav ul {
+    display: flex;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.site-footer__cta-nav a {
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-label);
+    font-size: var(--fz-label);
+    font-weight: 500;
+    color: var(--color-tabor-red);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 6px;
+    text-decoration-thickness: 2px;
+    transition: text-decoration-color var(--transition-base);
+}
+
+.site-footer__cta-nav a:hover,
+.site-footer__cta-nav a:focus-visible {
+    color: var(--color-tabor-red);
+    text-decoration-color: var(--color-tabor-red);
+    opacity: 1;
+}
+
+/* ---- Brand mark ---- */
+.site-footer__brand a {
+    display: inline-block;
+    line-height: 0;
+}
+
+.site-footer__brand img {
+    width: 175px;
+    height: auto;
+    max-width: 100%;
+    display: block;
+}
+
+/* ---- Contact info ---- */
+.site-footer__contact {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+    padding-block: var(--space-lg);
+    border-top: 1px solid var(--color-divider);
+    border-bottom: 1px solid var(--color-divider);
+}
+
+@media (min-width: 768px) {
+    .site-footer__contact {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-xl);
+    }
+}
+
+.site-footer__contact-title {
+    margin: 0 0 var(--space-sm);
+    font-family: var(--font-heading);
+    font-size: var(--fz-h3);
+    font-weight: 400;
+    color: var(--color-text-on-dark);
+    line-height: var(--lh-snug);
+}
+
+.site-footer__contact-col address {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-label);
+    font-size: var(--fz-label);
+    font-weight: 500;
+    line-height: 1.5;
+    font-style: normal;
+    color: var(--color-text-on-dark);
+}
+
+.site-footer__contact-col a {
+    color: var(--color-text-on-dark);
+    text-decoration: underline;
+    text-decoration-color: var(--color-text-on-dark);
+    text-underline-offset: 3px;
+    text-transform: lowercase;
+    letter-spacing: 0.06em;
+    transition: text-decoration-color var(--transition-base);
+}
+
+.site-footer__contact-col a[href^="tel:"] {
+    text-transform: none;
+}
+
+.site-footer__contact-col a:hover,
+.site-footer__contact-col a:focus-visible {
+    color: var(--color-text-on-dark);
+    text-decoration-color: transparent;
+    opacity: 1;
+}
+
+/* ---- Utility row: secondary nav + social ---- */
+.site-footer__utility {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    align-items: flex-start;
+}
+
+@media (min-width: 768px) {
+    .site-footer__utility {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.site-footer__utility-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+}
+
+.site-footer__utility-nav a {
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-label);
+    font-size: var(--fz-label);
+    font-weight: 500;
+    color: var(--color-text-on-dark);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 6px;
+    transition: text-decoration-color var(--transition-base);
+}
+
+.site-footer__utility-nav a:hover,
+.site-footer__utility-nav a:focus-visible {
+    color: var(--color-text-on-dark);
+    text-decoration-color: var(--color-text-on-dark);
+    opacity: 1;
+}
+
+/* Social — circular icon buttons */
+.site-footer__social ul {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.site-footer__social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    color: var(--color-text-on-dark);
+    text-decoration: none;
+    transition:
+        background-color var(--transition-fast),
+        border-color var(--transition-fast),
+        color var(--transition-fast);
+}
+
+.site-footer__social a:hover,
+.site-footer__social a:focus-visible {
+    background-color: var(--color-text-on-dark);
+    border-color: var(--color-text-on-dark);
+    color: var(--color-tabor-red);
+    opacity: 1;
+}
+
+.site-footer__social svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* ---- Legal nav ---- */
+.site-footer__legal ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    justify-content: flex-start;
+}
+
+@media (min-width: 768px) {
+    .site-footer__legal ul {
+        justify-content: flex-end;
+    }
+}
+
+.site-footer__legal a {
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-legal);
+    font-size: var(--fz-small);
+    font-weight: 500;
+    color: var(--color-text-on-dark);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 5px;
+    transition: text-decoration-color var(--transition-base);
+}
+
+.site-footer__legal a:hover,
+.site-footer__legal a:focus-visible {
+    color: var(--color-text-on-dark);
+    text-decoration-color: var(--color-text-on-dark);
+    opacity: 1;
+}
+
+
+/* ============================================================================
+   6. SLATE UI OVERRIDES
+   ----------------------------------------------------------------------------
+   These rules style elements Slate renders itself (NOT our chrome) — the
+   application checklist tabs, file uploader, form input widths on mobile,
+   the decision-letter confetti, etc. Preserved from the existing Tabor
+   build.css with two adjustments:
+     • Brand color swapped from the sample blue (#00669e) to Tabor red (#9D2235)
+     • Box-shadow / hover transforms preserved as-is
+   If a future Slate update breaks any of these, comment out the offending
+   rule rather than removing — they're not from us, they're known fixes.
+   ============================================================================ */
+
+/* Default link treatment inside Slate content */
+#content a,
+#content a:link,
+#content a:visited {
+    color: var(--color-tabor-red);
+    text-decoration: none;
+}
+
+#content a:hover,
+#content a:active,
+#content a:focus-visible {
+    color: var(--color-tabor-red);
+    text-decoration: underline;
+}
+
+/* Form input element fonts and sizes — Slate's defaults are inconsistent */
+input,
+button,
+textarea,
+select,
+optgroup,
+option,
+input[type=password],
+input[type=text],
+input[type=email],
+input[type=tel],
+input:not([type]) {
+    font-family: inherit !important;
+    font-size: 100%;
+}
+
+/* Mobile form input widths */
+@media screen and (max-width: 600px) {
+    button,
+    textarea,
+    input[type=password],
+    input[type=text],
+    input[type=email],
+    input[type=tel],
+    input:not([type]),
+    div.form_question:not([class*="form_birthdate"]) select {
+        width: 100%;
+    }
+}
+
+/* IE/Edge legend formatting */
+#content legend {
+    max-width: 100%;
+}
+
+/* Button defaults */
+button.default,
+button[type=button] {
+    padding: 8px 15px;
+    border-radius: 2px;
+}
+
+/* Prevent horizontal overflow on iOS */
+#page {
+    overflow-x: hidden;
+}
+
+/* Decision-letter confetti — keep above other content */
+body > canvas {
+    z-index: 500;
+}
+
+/* Portfolio / file uploader tabs */
+.plupload_filelist_footer {
+    height: 43px !important;
+}
+
+ul.tabs li a {
+    height: 30px;
+    font-size: 14px;
+}
+
+.slide {
+    height: auto !important;
+    width: auto !important;
+}
+
+/* Application and Financial Aid Checklist subtabs */
+#content ul.subtabs li a {
+    font-size: 14px;
+    padding: 10px 10px;
+    border: 1px solid rgba(157, 34, 53, 0.17);
+    box-shadow: 0.5px 0.5px 1px rgba(157, 34, 53, 0.17);
+    border-radius: 4px;
+}
+
+#content ul.subtabs {
+    padding-bottom: 20px;
+}
+
+#content ul.subtabs li a.selected {
+    background-color: var(--color-tabor-red) !important;
+    color: var(--color-tabor-white) !important;
+}
+
+#content ul.subtabs li.selected a:hover {
+    background-color: rgba(157, 34, 53, 0.71) !important;
+    color: var(--color-tabor-white) !important;
+    transform: scale(1.075) rotate(0.001deg);
+    box-shadow: 0px 5px 20px 5px rgba(0, 0, 0, 0.25);
+    transition-property: all;
+    transition-duration: 170ms;
+}
+
+/* Slate application menu sidebar — responsive widths */
+#side {
+    width: 20%;
+    box-sizing: border-box;
+}
+
+#main {
+    width: 80%;
+}
+
+div#menu {
+    width: auto;
+}
+
+div#menu ul li a {
+    width: 100%;
+    min-width: 100px;
+    padding: 3px 0 5px 1px;
+    overflow-wrap: break-word;
+}
+
+/* Mobile responsive table layout */
+@media only screen and (max-width: 480px) and (min-width: 320px) {
+    table.fixed {
+        width: 100% !important;
+    }
+    table.fixed > tbody > tr > td,
+    table.fixed > tbody > tr > th {
+        display: block;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+    table.fixed > colgroup > col {
+        display: none;
+    }
+}
+
+/* Old-style event landing pages */
+@media only screen and (min-width: 768px) {
+    .register_datepicker_container {
+        flex-direction: column-reverse !important;
+        flex-wrap: wrap-reverse;
+        width: 65%;
+    }
+    #register_events {
+        width: 80% !important;
+        margin: auto;
+        padding-top: 25px;
+    }
+    .register_datepicker_sidebar {
+        width: 80% !important;
+        margin: auto;
+    }
+    #elp-txt_wrapper {
+        float: left;
+        width: 35%;
+    }
+}
