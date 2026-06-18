@@ -37,15 +37,21 @@
 }
 
 .site-header__logo {
-    height: 60px;
+    height: 120px;
     width: auto;
     max-width: 100%;
 }
 
-/* Narrow viewport: shrink logo + tighten padding. */
+/* Narrow viewport: shrink logo + tighten the header.
+   --header-height is overridden inline because custom properties can't be
+   redefined within a media-query-friendly fallback; instead we drop the
+   element's natural height. */
 @media (max-width: 640px) {
+    .site-header__inner {
+        min-height: 100px;
+    }
     .site-header__logo {
-        height: 44px;
+        height: 70px;
     }
 }
 

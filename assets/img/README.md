@@ -3,28 +3,36 @@
 Production image assets. The HTML and CSS reference three files by name — keep
 those names stable so logo refreshes are drop-in replacements.
 
-| File              | Status        | Used by                              | Original filename / source                                                                                          |
-| ----------------- | ------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
-| `logo-header.svg` | ✓ in place    | `index.html` → `.site-header__logo`  | Originally `Logo-150-header.svg` from the Tabor Academy brand assets. ViewBox `0 0 795.74 258.37`.                  |
-| `logo-footer.svg` | ✓ in place    | `index.html` → `.site-footer__brand` | Originally `Logo-150-white.svg` (Finalsite: `https://resources.finalsite.net/images/v1751395501/taboracademyorg/ohjh8ebsa1prst2bvezk/Logo-150-white.svg`). ViewBox `0 0 843.7 709.3`. |
-| `footer-bg.jpg`   | ✓ in place    | `tokens.css` → `--footer-bg-image`   | Originally `updated-footer.jpg` (Finalsite: `https://resources.finalsite.net/images/f_auto,q_auto/v1681307819/taboracademyorg/byvli5agtzt47ztiwfp9/updated-footer.jpg`). ~80 KB.                |
+| File              | Status     | Used by                              | Original filename / source                                                                                                                              |
+| ----------------- | ---------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `logo-header.png` | ✓ in place | `index.html` → `.site-header__logo`  | Originally `Tabor-Logo-RED.png` from Tabor's Slate instance: `https://admissions.taboracademy.org/www/images/Branding%20and%20Logos/Tabor-Logo-RED.png` (4422 × 3443, transparent PNG, 272 KB) |
+| `logo-footer.png` | ✓ in place | `index.html` → `.site-footer__brand` | Originally `Tabor Academy w Star Logo.png` from Tabor's Slate instance: `https://admissions.taboracademy.org/www/images/Branding%20and%20Logos/Tabor%20Academy%20w%20Star%20Logo.png` (1200 × 926, transparent PNG, 53 KB) |
+| `footer-bg.jpg`   | ✓ in place | `tokens.css` → `--footer-bg-image`   | Originally `updated-footer.jpg` (Finalsite: `https://resources.finalsite.net/images/f_auto,q_auto/v1681307819/taboracademyorg/byvli5agtzt47ztiwfp9/updated-footer.jpg`). ~80 KB.                |
+
+Both PNGs have transparency, so they sit cleanly on the white header / wave
+footer without a visible background box.
 
 ## Optimization
 
-`logo-footer.svg` is currently ~485 KB — it's an Illustrator export with
-excessive coordinate precision. Running it through SVGO would compress it to
-roughly 10–20 KB with no visible change:
+`logo-header.png` is currently ~272 KB at 4422 × 3443 — far higher resolution
+than it ever renders at (it displays at 154 × 120 px = roughly 308 × 240
+px for retina). A one-time resize would drop the file to ~30 KB with no
+perceptible quality loss:
 
 ```bash
-npx svgo logo-footer.svg --multipass
+# macOS — using sips (built in)
+sips -Z 800 logo-header.png
+
+# or with ImageMagick
+magick logo-header.png -resize 800x logo-header.png
 ```
 
-`logo-header.svg` (~9 KB) is fine as-is.
+`logo-footer.png` (~53 KB) and `footer-bg.jpg` (~80 KB) are fine as-is.
 
 ## Replacing logos in the future
 
-When the brand mark gets refreshed, save the new file as `logo-header.svg` or
-`logo-footer.svg` — same name. The HTML doesn't need to change.
+When the brand mark gets refreshed, save the new file as `logo-header.png` or
+`logo-footer.png` — same name. The HTML doesn't need to change.
 
 If filenames change for any reason, update them in:
 

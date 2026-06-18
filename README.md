@@ -53,8 +53,8 @@ tabor-slate-template/
     │       ├── header.css
     │       └── footer.css
     ├── img/
-    │   ├── logo-header.svg ← red Tabor wordmark
-    │   ├── logo-footer.svg ← white Tabor wordmark (footer)
+    │   ├── logo-header.png ← red Tabor crest + wordmark (header)
+    │   ├── logo-footer.png ← white Tabor crest + wordmark (footer)
     │   ├── footer-bg.jpg   ← ocean wave hero
     │   └── README.md
     ├── fonts/              ← reserved for self-hosted fonts (see README)
@@ -187,12 +187,10 @@ one" philosophy.
 
 ## Known issues
 
-- **`logo-footer.svg` is ~485 KB.** Adobe Illustrator export with excessive
-  coordinate precision; only 26 paths inside. Run SVGO to compress to
-  ~10–20 KB with no visible change:
-  ```bash
-  npx svgo assets/img/logo-footer.svg --multipass
-  ```
+- **`logo-header.png` is oversized.** Source file is 4422 × 3443 px (~272 KB),
+  but renders at 154 × 120 px in the header. A one-time resize would drop the
+  file to ~30 KB with no visible quality difference. See
+  `assets/img/README.md` for the resize commands.
 
 ---
 
