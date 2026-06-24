@@ -5,8 +5,8 @@
       <template path="/shared/base.xslt" xmlns="http://technolutions.com/framework" />
       <head>
         <!-- Cache busting: increment timestamp (yyyyMMddHHmm) when build-fonts.css or build.css changes. -->
-        <link href="/shared/build-fonts.css?v=202606181400" rel="stylesheet" />
-        <link href="/shared/build.css?v=202606181400" rel="stylesheet" />
+        <link href="/shared/build-fonts.css?v=202606241220" rel="stylesheet" />
+        <link href="/shared/build.css?v=202606241220" rel="stylesheet" />
         <link href="/shared/build-mobile-global.css" rel="stylesheet" />
         <script src="/shared/build-mobile-global.js" />
         <style>html &gt; body { line-height: normal; } ul.cr, li.cr { margin: 0; padding: 0; } #content { clear: both; padding: 15px; } #global { float: right; } #global ul, #global li { list-style: none; margin: 0; padding: 0; }</style>
@@ -26,7 +26,7 @@
           <header class="site-header" role="banner">
             <div class="site-header__inner">
               <a class="site-header__brand" href="https://www.taboracademy.org/" aria-label="Tabor Academy">
-                <img class="site-header__logo" src="/images/logo-header.png" alt="Tabor Academy" width="154" height="120" />
+                <img class="site-header__logo" src="/images/logo-header.png" alt="Tabor Academy" width="263" height="60" />
               </a>
             </div>
           </header>

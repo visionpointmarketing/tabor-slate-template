@@ -58,7 +58,7 @@ tabor-slate-template/
     │       ├── header.css
     │       └── footer.css
     ├── img/
-    │   ├── logo-header.png ← red Tabor crest + wordmark (header)
+    │   ├── logo-header.png ← red minimal Tabor wordmark (header)
     │   ├── logo-footer.png ← white Tabor crest + wordmark (footer)
     │   ├── footer-bg.jpg   ← ocean wave hero
     │   └── README.md
@@ -206,10 +206,7 @@ one" philosophy.
 
 ## Known issues
 
-- **`logo-header.png` is oversized.** Source file is 4422 × 3443 px (~272 KB),
-  but renders at 154 × 120 px in the header. A one-time resize would drop the
-  file to ~30 KB with no visible quality difference. See
-  `assets/img/README.md` for the resize commands.
+_None currently._
 
 ---
 

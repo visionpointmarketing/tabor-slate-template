@@ -61,12 +61,12 @@
     --content-pad-x-lg:   5.625rem; /* 90px — desktop side padding */
 
     /* ---- Header ----
-       The standard Tabor mark is a stacked lockup (crest + "TABOR" + "ACADEMY"),
-       so the header is taller than a typical horizontal-wordmark site header.
+       Minimal "TABOR" wordmark (horizontal, ~4.4:1 ratio). Header sized for a
+       typical horizontal-wordmark height.
        Logo target heights:
-         desktop: 120px  → header 150px
-         mobile : 70px   → header 100px (see header.css media query) */
-    --header-height:      150px;
+         desktop: 60px  → header 90px
+         mobile : 40px  → header 70px (see header.css media query) */
+    --header-height:      90px;
     --header-pad-y:       15px;
 
     /* ---- Footer ----

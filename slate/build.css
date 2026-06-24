@@ -81,7 +81,7 @@
     --content-pad-x-lg:   5.625rem;
 
     /* Header */
-    --header-height:      150px;
+    --header-height:      90px;
     --header-pad-y:       15px;
 
     /* Footer background.
@@ -255,17 +255,17 @@ body {
 }
 
 .site-header__logo {
-    height: 120px;
+    height: 60px;
     width: auto;
     max-width: 100%;
 }
 
 @media (max-width: 640px) {
     .site-header__inner {
-        min-height: 100px;
+        min-height: 70px;
     }
     .site-header__logo {
-        height: 70px;
+        height: 40px;
     }
 }
 
