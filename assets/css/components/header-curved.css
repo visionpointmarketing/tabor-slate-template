@@ -1,0 +1,92 @@
+/* ============================================================================
+   header-curved.css — alternate "curved red" site header variant.
+   Used by /variant-curved.html. Scoped to its own BEM root
+   (.site-header-curved) so it never collides with the default .site-header.
+
+   Visual: a red curved shape covers the top-left portion of the viewport,
+   sweeping down-and-left to a narrow base. The white stacked Tabor mark
+   sits inside the red zone. The rest of the page is unaffected.
+
+   Implementation note: the curve is an inline SVG with viewBox + non-
+   uniform stretch (preserveAspectRatio="none"), so it scales fluidly
+   across viewport widths without needing extra media queries to redraw
+   the path.
+   ============================================================================ */
+
+.site-header-curved {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    background-color: var(--color-bg-page);
+    overflow: hidden;
+    isolation: isolate;          /* keeps z-index local to this header */
+}
+
+/* The red curve sits behind the logo. The SVG path is in the HTML so it can
+   inherit `fill="currentColor"` semantics if we ever swap the brand color
+   to a token — for now it uses a literal Tabor red hex. */
+.site-header-curved__shape {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.site-header-curved__shape svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Brand mark — positioned inside the red curve.
+   Left offset uses % so the logo moves with the curve at different
+   viewport widths. */
+.site-header-curved__brand {
+    position: absolute;
+    top: 50%;
+    left: 6%;
+    transform: translateY(-50%);
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;
+    text-decoration: none;
+    transition: opacity var(--transition-fast);
+}
+
+.site-header-curved__brand:hover,
+.site-header-curved__brand:focus-visible {
+    opacity: 0.85;
+}
+
+.site-header-curved__logo {
+    width: 200px;
+    height: auto;
+    max-width: 100%;
+    display: block;
+}
+
+/* ----------------------------------------------------------------------------
+   Responsive scaling — the header shrinks but the curve keeps its shape.
+   ---------------------------------------------------------------------------- */
+
+@media (max-width: 900px) {
+    .site-header-curved {
+        height: 220px;
+    }
+    .site-header-curved__logo {
+        width: 160px;
+    }
+}
+
+@media (max-width: 600px) {
+    .site-header-curved {
+        height: 170px;
+    }
+    .site-header-curved__logo {
+        width: 120px;
+    }
+    .site-header-curved__brand {
+        left: 7%;
+    }
+}

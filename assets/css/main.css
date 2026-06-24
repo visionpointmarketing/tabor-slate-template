@@ -13,6 +13,10 @@
 /* 2. Layout — page-level containers and the Slate form area. */
 @import url("layout/containers.css");
 
-/* 3. Components — header, footer, future shared UI. */
+/* 3. Components — header, footer, future shared UI.
+      header-curved.css is an alternate header style used only by
+      /variant-curved.html. Its selectors don't collide with the default
+      .site-header, so loading both in one bundle is safe. */
 @import url("components/header.css");
+@import url("components/header-curved.css");
 @import url("components/footer.css");

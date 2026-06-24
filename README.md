@@ -37,7 +37,8 @@ npx serve .
 
 ```
 tabor-slate-template/
-├── index.html              ← staging template (visual reference, GH Pages preview)
+├── index.html              ← default staging template (current Slate install)
+├── variant-curved.html     ← alternate header variant for client review
 ├── README.md
 ├── .gitignore
 ├── slate/                  ← Slate install files (paste into Branding Editor)
@@ -45,7 +46,7 @@ tabor-slate-template/
 │   ├── build.css               ← flattened CSS + Slate UI overrides
 │   ├── build-fonts.css         ← FontAwesome only (Google Fonts via <link>)
 │   └── README.md               ← deploy instructions
-└── assets/                 ← staging assets (used by index.html)
+└── assets/                 ← staging assets (used by both variants)
     ├── css/
     │   ├── main.css        ← single entry; @imports the rest in cascade order
     │   ├── base/
@@ -55,16 +56,38 @@ tabor-slate-template/
     │   ├── layout/
     │   │   └── containers.css  ← .container, .slate-form-area
     │   └── components/
-    │       ├── header.css
+    │       ├── header.css           ← default minimal-wordmark header
+    │       ├── header-curved.css    ← alternate curved-red header (variant)
     │       └── footer.css
     ├── img/
     │   ├── logo-header.png ← red minimal Tabor wordmark (header)
-    │   ├── logo-footer.png ← white Tabor crest + wordmark (footer)
+    │   ├── logo-footer.png ← white Tabor crest + wordmark (footer + curved header)
     │   ├── footer-bg.jpg   ← ocean wave hero
     │   └── README.md
     ├── fonts/              ← reserved for self-hosted fonts (see README)
     └── js/                 ← reserved for future scripts (none today)
 ```
+
+## Layout variants
+
+The staging site hosts two header treatments side-by-side. The default
+(`index.html`) is what's deployed to Tabor's Slate. The curved variant
+(`variant-curved.html`) is for client preview only — local-only, not in Slate.
+
+| URL path             | Header treatment                                                                                                 |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `/`                  | Minimal red TABOR wordmark on a clean white header (90px tall). Currently the deployed Slate look.               |
+| `/variant-curved.html` | White stacked Tabor mark inside a swooping red curve that fills the top-left of the page. Hero-style treatment. |
+
+Both pages share the same footer, form area, and design tokens — only the
+header markup and one CSS file (`components/header-curved.css`) differ. The
+selectors are namespaced (`.site-header-curved__*`) so loading both header
+stylesheets in the same bundle is safe.
+
+The curved variant currently uses `logo-footer.png` (white "TABOR ACADEMY"
+stacked mark) as a stand-in for the "School by the Sea" variant shown in
+the client mockup. Drop a "School by the Sea" PNG into `assets/img/` and
+update the `<img src>` in `variant-curved.html` to swap.
 
 **Two distinct purposes:**
 
