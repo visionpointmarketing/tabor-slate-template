@@ -3,49 +3,49 @@
    Used by /variant-curved.html. Scoped to its own BEM root
    (.site-header-curved) so it never collides with the default .site-header.
 
-   Visual: a red curved shape covers the top-left portion of the viewport,
-   sweeping down-and-left to a narrow base. The white stacked Tabor mark
-   sits inside the red zone. The rest of the page is unaffected.
-
-   Implementation note: the curve is an inline SVG with viewBox + non-
-   uniform stretch (preserveAspectRatio="none"), so it scales fluidly
-   across viewport widths without needing extra media queries to redraw
-   the path.
+   The curve SVG (viewBox + path) is copied verbatim from
+   taboracademy.org's home-logo-bg.svg so the silhouette matches the
+   live site exactly. The SVG keeps its natural ~3.92:1 aspect ratio,
+   which means the header itself grows taller on wider viewports —
+   same behavior as the live homepage hero.
    ============================================================================ */
 
 .site-header-curved {
     position: relative;
     width: 100%;
-    height: 280px;
     background-color: var(--color-bg-page);
+
+    /* The header's height follows the SVG's natural aspect (1211.3 / 309
+       ≈ 3.92:1), so on a 1440px viewport it lands around 367px tall.
+       Clamp the height so it doesn't get absurdly tall on ultrawide
+       viewports while still showing the full curve. */
+    max-height: 480px;
     overflow: hidden;
-    isolation: isolate;          /* keeps z-index local to this header */
+    isolation: isolate;
 }
 
-/* The red curve sits behind the logo. The SVG path is in the HTML so it can
-   inherit `fill="currentColor"` semantics if we ever swap the brand color
-   to a token — for now it uses a literal Tabor red hex. */
+/* The red curve SVG. Width 100% of the header; height auto preserves the
+   SVG's natural aspect ratio so the curve never looks stretched. */
 .site-header-curved__shape {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
+    position: relative;
+    width: 100%;
+    line-height: 0;       /* eliminates inline-SVG baseline gap */
     z-index: 0;
 }
 
 .site-header-curved__shape svg {
     width: 100%;
-    height: 100%;
+    height: auto;
     display: block;
 }
 
-/* Brand mark — positioned inside the red curve.
-   Left offset uses % so the logo moves with the curve at different
-   viewport widths. */
+/* Brand mark — positioned inside the red curve, upper-left.
+   The percentages place the logo where the curve is at its tallest,
+   so it stays visually anchored regardless of viewport width. */
 .site-header-curved__brand {
     position: absolute;
-    top: 50%;
-    left: 6%;
-    transform: translateY(-50%);
+    top: 12%;
+    left: 4%;
     z-index: 1;
     display: inline-flex;
     align-items: center;
@@ -60,33 +60,28 @@
 }
 
 .site-header-curved__logo {
-    width: 200px;
+    width: 175px;
     height: auto;
     max-width: 100%;
     display: block;
 }
 
 /* ----------------------------------------------------------------------------
-   Responsive scaling — the header shrinks but the curve keeps its shape.
+   Responsive scaling — logo shrinks at narrower widths; curve scales itself.
    ---------------------------------------------------------------------------- */
 
 @media (max-width: 900px) {
-    .site-header-curved {
-        height: 220px;
-    }
     .site-header-curved__logo {
-        width: 160px;
+        width: 140px;
     }
 }
 
 @media (max-width: 600px) {
-    .site-header-curved {
-        height: 170px;
-    }
     .site-header-curved__logo {
-        width: 120px;
+        width: 100px;
     }
     .site-header-curved__brand {
-        left: 7%;
+        top: 14%;
+        left: 6%;
     }
 }
