@@ -26,7 +26,7 @@
           <header class="site-header" role="banner">
             <div class="site-header__inner">
               <a class="site-header__brand" href="https://www.taboracademy.org/" aria-label="Tabor Academy">
-                <img class="site-header__logo" src="/images/logo-header.png" alt="Tabor Academy" width="263" height="60" />
+                <img class="site-header__logo" src="/images/logo-header-wordmark.png" alt="Tabor Academy" width="263" height="60" />
               </a>
             </div>
           </header>

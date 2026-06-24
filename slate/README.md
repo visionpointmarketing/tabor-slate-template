@@ -122,6 +122,26 @@ Edit the source files in this folder, commit, push. Then redo steps 2–5 to
 deploy. The repo's git history is the canonical record of what's in Slate —
 the Branding Editor itself doesn't surface diffs.
 
+### Important: replacing images
+
+Slate strips `?v=...` query strings from `src` paths in build.xslt at render
+time, so the usual "bump the version query string" cache-busting trick does
+not work for images. (It does work for the CSS `<link href>` tags — that's
+why `?v=yyyyMMddHHmm` works there.)
+
+To replace an image (logo, footer bg, etc.) **always use a new filename**.
+Don't upload over the existing file — Slate's CDN will keep serving the old
+cached copy for hours or days. Recommended pattern:
+
+1. Upload the new image to `/images/` with a fresh, descriptive name —
+   e.g. `logo-header-wordmark.png`, `logo-header-2027.png`, `footer-bg-fall.jpg`
+2. Update the `src` in build.xslt (or `--footer-bg-image` in build.css) to
+   point at the new filename
+3. Save, Publish, verify
+
+The old file can be deleted from the Files area once you've confirmed the
+new one is live.
+
 For small changes (color, spacing, single property) you can edit directly
 in the Branding Editor and skip the local edit — just make sure to backport
 the change to the repo afterwards so the source of truth stays in sync.
