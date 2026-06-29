@@ -271,6 +271,80 @@ body {
 
 
 /* ============================================================================
+   5. COMPONENTS — site-header-curved (CLIENT-APPROVED LAYOUT)
+   ----------------------------------------------------------------------------
+   Alternate header treatment selected by the client. The .site-header rules
+   above remain in place as a dormant fallback (no markup uses them) in case
+   we ever swap back. The curve SVG (viewBox + path) is copied verbatim from
+   taboracademy.org's home-logo-bg.svg so the silhouette matches the live
+   public site. The SVG keeps its natural ~3.92:1 aspect ratio, so the
+   header grows taller on wider viewports — same behavior as the homepage.
+   ============================================================================ */
+
+.site-header-curved {
+    position: relative;
+    width: 100%;
+    background-color: var(--color-bg-page);
+    max-height: 480px;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.site-header-curved__shape {
+    position: relative;
+    width: 100%;
+    line-height: 0;
+    z-index: 0;
+}
+
+.site-header-curved__shape svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.site-header-curved__brand {
+    position: absolute;
+    top: 12%;
+    left: 4%;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;
+    text-decoration: none;
+    transition: opacity var(--transition-fast);
+}
+
+.site-header-curved__brand:hover,
+.site-header-curved__brand:focus-visible {
+    opacity: 0.85;
+}
+
+.site-header-curved__logo {
+    width: 175px;
+    height: auto;
+    max-width: 100%;
+    display: block;
+}
+
+@media (max-width: 900px) {
+    .site-header-curved__logo {
+        width: 140px;
+    }
+}
+
+@media (max-width: 600px) {
+    .site-header-curved__logo {
+        width: 100px;
+    }
+    .site-header-curved__brand {
+        top: 14%;
+        left: 6%;
+    }
+}
+
+
+/* ============================================================================
    5. COMPONENTS — site-footer
    ============================================================================ */
 

@@ -5,8 +5,8 @@
       <template path="/shared/base.xslt" xmlns="http://technolutions.com/framework" />
       <head>
         <!-- Cache busting: increment timestamp (yyyyMMddHHmm) when build-fonts.css or build.css changes. -->
-        <link href="/shared/build-fonts.css?v=202606241220" rel="stylesheet" />
-        <link href="/shared/build.css?v=202606241220" rel="stylesheet" />
+        <link href="/shared/build-fonts.css?v=202606261500" rel="stylesheet" />
+        <link href="/shared/build.css?v=202606261500" rel="stylesheet" />
         <link href="/shared/build-mobile-global.css" rel="stylesheet" />
         <script src="/shared/build-mobile-global.js" />
         <style>html &gt; body { line-height: normal; } ul.cr, li.cr { margin: 0; padding: 0; } #content { clear: both; padding: 15px; } #global { float: right; } #global ul, #global li { list-style: none; margin: 0; padding: 0; }</style>
@@ -20,15 +20,22 @@
         <xsl:copy-of select="xhtml:html/xhtml:body/@*" />
         <div id="page">
           <!-- ============================================================
-               SITE HEADER
-               Minimal: brand mark only. Stacked Tabor Academy lockup.
+               SITE HEADER — CURVED RED VARIANT
+               Client-approved layout. ViewBox + path copied verbatim from
+               taboracademy.org's home-logo-bg.svg so the curve matches
+               the public site exactly. Logo is the white stacked TABOR
+               ACADEMY mark (logo-footer.png) as a stand-in for the
+               "School by the Sea" variant — swap in when client provides.
                ============================================================ -->
-          <header class="site-header" role="banner">
-            <div class="site-header__inner">
-              <a class="site-header__brand" href="https://www.taboracademy.org/" aria-label="Tabor Academy">
-                <img class="site-header__logo" src="/images/logo-header-wordmark.png" alt="Tabor Academy" width="263" height="60" />
-              </a>
+          <header class="site-header-curved" role="banner">
+            <div class="site-header-curved__shape" aria-hidden="true">
+              <svg viewBox="0 0 1211.3 309" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1200.4-9.3v-169.5H-202.9v592.6C205.1,155.6,685.5,1.9,1200.4-9.3z" fill="#9D2235" />
+              </svg>
             </div>
+            <a class="site-header-curved__brand" href="https://www.taboracademy.org/" aria-label="Tabor Academy">
+              <img class="site-header-curved__logo" src="/images/logo-footer.png" alt="Tabor Academy" width="175" height="135" />
+            </a>
           </header>
 
           <!-- ============================================================
